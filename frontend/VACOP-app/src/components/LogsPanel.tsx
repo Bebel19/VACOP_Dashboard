@@ -10,7 +10,7 @@ const fakeLogs = [
   { level: 'INFO', msg: '[backend-api] Requête...' },
   { level: 'INFO', msg: '[frontend-ui] Opérateur admin connecté' },
   { level: 'WARN', msg: '[network-5G] Perte de signal 5G' },
-  { level: 'INFO', msg: '[backend] Déclenchement arrêt d\'urgence' },
+  { level: 'INFO', msg: '[backend] Déclenchement arrêt d\'urgence.' },
   { level: 'INFO', msg: '[frontend-ui] Commande avancer...' },
   { level: 'WARN', msg: '[proximity-front-left-ultra] [WARN] Obstacle...' },
   { level: 'INFO', msg: '[raspberry] Moteur gauche activé' },
