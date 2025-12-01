@@ -104,43 +104,55 @@ const MissionPlannerPage: React.FC = () => {
   return (
     <div className="page-container">
       {/* Application Header */}
-      <Header>
-        <div className="header-group">
-          <ConnectionStatus 
-            label="Manette déconnecté" 
-            isConnected={isGamepadConnected} 
-            type="gamepad" 
-          />
-          <button 
-            className="btn btn-primary"
-            onClick={() => navigate('/teleoperation')}
-          >
-            Changer de mode
-          </button>
-        </div>
-        
+    <Header>
+      {/* Groupe de gauche : manette + changement de mode */}
+      <div className="header-group">
+        <ConnectionStatus 
+          label="Manette déconnecté" 
+          isConnected={isGamepadConnected} 
+          type="gamepad" 
+        />
+        <button 
+          className="btn btn-primary"
+          onClick={() => navigate('/teleoperation')}
+        >
+          Changer de mode
+        </button>
+      </div>
+      
+      {/* Centre : titre + état de la destination */}
+      <div className="header-title-group">
         <h1>Choisir mission</h1>
-        
-        <div className="header-group">
-          {/* Opens the logs page in a new tab */}
-          <Link to="/logs" target="_blank" className="btn btn-secondary">
-            Logs
-          </Link>
-          <Link 
-            to="/connect" 
-            target="_blank" 
-            rel="noopener noreferrer" 
-            style={{textDecoration: 'none'}}
-          >
-            <ConnectionStatus 
-              label="Se connecter" 
-              isConnected={isRobotConnected} 
-              type="robot" 
-            />
-          </Link>
-          <button onClick={handleLogout} className="btn btn-danger">Logout</button>
-        </div>
-      </Header>
+        {/* Indicateur de validité de la destination dans le header */}
+        <button
+          className={`btn btn-status ${destination ? 'btn-green' : 'btn-red'}`}
+        >
+          {destination ? 'Destination OK' : 'Destination NOK'}
+        </button>
+      </div>
+
+      {/* Groupe de droite : logs + connexion robot + logout */}
+      <div className="header-group">
+        {/* Opens the logs page in a new tab */}
+        <Link to="/logs" target="_blank" className="btn btn-secondary">
+          Logs
+        </Link>
+        <Link 
+          to="/connect" 
+          target="_blank" 
+          rel="noopener noreferrer" 
+          style={{textDecoration: 'none'}}
+        >
+          <ConnectionStatus 
+            label="Se connecter" 
+            isConnected={isRobotConnected} 
+            type="robot" 
+          />
+        </Link>
+        <button onClick={handleLogout} className="btn btn-danger">Logout</button>
+      </div>
+    </Header>
+
 
       {/* Main Page Content Grid */}
       <main className="planner-grid">
@@ -176,12 +188,6 @@ const MissionPlannerPage: React.FC = () => {
             >
               Planifier la mission
             </button>
-            
-            {/* Visual indicator for destination validity */}
-            <button className={`btn btn-status ${destination ? 'btn-green' : 'btn-red'}`}>
-              {destination ? 'Destination OK' : 'Destination NOK'}
-            </button>
-            
             <button 
               className="btn btn-action btn-green"
               onClick={handleLaunchNow}

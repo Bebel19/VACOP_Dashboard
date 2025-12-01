@@ -31,5 +31,7 @@ const Header: React.FC<HeaderProps> = ({ children }) => {
   );
 };
 
+
 // Makes the Header component available for import elsewhere in the application.
 export default Header;
+

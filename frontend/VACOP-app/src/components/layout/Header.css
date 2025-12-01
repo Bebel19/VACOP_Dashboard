@@ -37,3 +37,13 @@
   align-items: center;
   gap: 1rem;
 }
+
+/**
+ * Groupe central : titre + indicateur de destination.
+ * Affiche "Choisir mission" avec le bouton Destination OK/NOK juste à côté.
+ */
+.header-title-group {
+  display: flex;
+  align-items: center;
+  gap: 1rem; /* espace entre le titre et le bouton */
+}
