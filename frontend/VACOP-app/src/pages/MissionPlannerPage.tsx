@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Header from '../components/layout/Header';
 import ConnectionStatus from '../components/ConnectionStatus';
@@ -19,6 +19,14 @@ import './MissionPlannerPage.css'; // Import page-specific styles
  */
 const MissionPlannerPage: React.FC = () => {
   const navigate = useNavigate();
+
+  // Vérification de l'authentification au chargement
+  useEffect(() => {
+    const token = authService.getCurrentUserToken();
+    if (!token) {
+      navigate('/login');
+    }
+  }, [navigate]);
 
   // --- Component State ---
 

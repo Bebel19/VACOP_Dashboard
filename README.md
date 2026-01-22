@@ -69,3 +69,20 @@ La structure de l'application frontend (React) est en place, incluant les pages 
 2.  Connexion du backend aux flux de données ROS2 du véhicule (via MQTT).
 3.  Validation de la chaîne complète, de la sélection de mission sur l'IHM à l'exécution sur le véhicule réel.
 
+
+AJOUTER UN USER :
+
+curl -X POST http://localhost:5000/auth/register \
+     -H "Content-Type: application/json" \
+     -d '{"username": "nouvel_user", "password": "mon_mot_de_passe"}'
+
+
+Montrer users :
+
+
+
+docker exec -it vacop_db psql -U va
+cop_user -d vacop_db
+
+
+SELECT * FROM users;

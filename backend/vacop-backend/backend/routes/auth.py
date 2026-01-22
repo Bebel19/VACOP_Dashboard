@@ -30,3 +30,23 @@ def login():
         }), 200
     
     return jsonify({"msg": "Identifiants invalides"}), 401
+
+@auth_bp.route('/register', methods=['POST'])
+def register():
+    data = request.get_json()
+    username = data.get('username')
+    password = data.get('password')
+
+    if not username or not password:
+        return jsonify({"msg": "Nom d'utilisateur et mot de passe requis"}), 400
+
+    if User.query.filter_by(username=username).first():
+        return jsonify({"msg": "Nom d'utilisateur déjà pris"}), 409
+
+    hashed_pw = bcrypt.generate_password_hash(password).decode('utf-8')
+    new_user = User(username=username, password_hash=hashed_pw, role='user')
+    
+    db.session.add(new_user)
+    db.session.commit()
+    
+    return jsonify({"msg": "Utilisateur créé avec succès"}), 201

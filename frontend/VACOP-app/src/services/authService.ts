@@ -6,6 +6,7 @@ import axios from 'axios';
  * to forward requests from '/auth/login' to the backend server.
  */
 const API_URL = '/auth/login';
+const REGISTER_URL = '/auth/register';
 
 /**
  * Defines the expected shape of the successful login response payload,
@@ -24,24 +25,6 @@ interface LoginResponse {
  * @throws {Error} Throws an error on login failure (e.g., wrong credentials).
  */
 const login = async (username: string, password: string): Promise<boolean> => {
-  
-  // --- DEVELOPMENT SIMULATION BLOCK ---
-  // This code simulates a successful login for frontend development
-  // when the backend is not available.
-  console.log('Simulating login for:', username);
-
-  // 1. Manually set a mock token in localStorage.
-  localStorage.setItem('user_token', 'this_is_a_fake_token_for_dev');
-
-  // 2. Simulate network latency.
-  await new Promise(resolve => setTimeout(resolve, 500)); 
-
-  // 3. Return 'true' to indicate success.
-  return true;
-  // --- END DEVELOPMENT SIMULATION BLOCK ---
-
-
-  /* --- PRODUCTION AUTHENTICATION LOGIC (Commented Out) ---
   try {
     // 1. Send credentials to the backend API endpoint.
     const response = await axios.post<LoginResponse>(API_URL, {
@@ -62,7 +45,24 @@ const login = async (username: string, password: string): Promise<boolean> => {
     console.error('Login failed:', err);
     throw new Error('Invalid username or password.');
   }
-  --- END PRODUCTION LOGIC --- */
+};
+
+/**
+ * Registers a new user by sending credentials to the backend.
+ *
+ * @param {string} username The user's username.
+ * @param {string} password The user's password.
+ * @returns {Promise<boolean>} A promise that resolves to 'true' on success.
+ * @throws {Error} Throws an error on registration failure.
+ */
+const register = async (username: string, password: string): Promise<boolean> => {
+  try {
+    await axios.post(REGISTER_URL, { username, password });
+    return true;
+  } catch (err) {
+    console.error('Registration failed:', err);
+    throw new Error('Registration failed. Username might be taken.');
+  }
 };
 
 /**
@@ -90,6 +90,7 @@ const getCurrentUserToken = (): string | null => {
  */
 const authService = {
   login,
+  register,
   logout,
   getCurrentUserToken,
 };
