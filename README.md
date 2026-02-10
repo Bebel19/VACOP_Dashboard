@@ -63,6 +63,68 @@ L'architecture est construite sur **ROS2** et s'articule autour de trois pôles 
 
 La structure de l'application frontend (React) est en place, incluant les pages de connexion, de planification de mission, de téléopération et de visualisation des logs. Le service d'authentification simulé permet le développement et le test de l'interface sans dépendance au backend.
 
+---
+
+## Lancer la supervision (Docker)
+
+Le stack de supervision (frontend + backend + base de données + MQTT) se lance via Docker Compose.
+
+Depuis le dossier `VACOP_Dashboard/` :
+
+```bash
+docker compose up --build
+```
+
+Lancer en arrière-plan :
+
+```bash
+docker compose up -d --build
+```
+
+Sur Linux, si vous n'avez pas les droits Docker :
+
+```bash
+sudo docker compose up --build
+```
+
+Accès :
+
+- Interface web : http://localhost/
+- Backend : http://localhost:5000/
+
+Arrêter le stack :
+
+```bash
+docker compose down
+```
+
+Reset complet (supprime aussi les volumes, dont la DB) :
+
+```bash
+docker compose down -v
+```
+
+Vérifier l'état :
+
+```bash
+docker compose ps
+```
+
+Voir les logs :
+
+```bash
+docker compose logs -f
+```
+
+Pour plus de détails (Windows + Linux + dépannage), voir : [DOCS_RUN.md](DOCS_RUN.md).
+
+## Mode local (npm) — optionnel
+
+Pour développer le frontend hors Docker, vous pouvez lancer Vite via npm.
+
+- Instructions : [frontend/README.md](frontend/README.md)
+- Important : certaines pages appellent le backend sur `http://localhost:5000`, donc le backend doit tourner (Docker ou autre) pour ces fonctionnalités.
+
 ### Prochaines Étapes
 
 1.  Implémentation de la logique de communication WebSocket (côté client et serveur).

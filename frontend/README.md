@@ -8,23 +8,45 @@ This directory contains the frontend application for the VACOP project, built wi
 
 ## Development Setup
 
-To run the application locally for development for the 1st time:
+### Run with Docker (recommended)
 
+The frontend is meant to be started together with the backend using Docker Compose from the project root (`VACOP_Dashboard/`).
 
-docker-compose down --remove-orphans    
-docker rm -f vacop_backend || true 
-docker-compose up --build
+From `VACOP_Dashboard/`:
 
+```bash
+docker compose up --build
+```
 
+Then open: http://localhost/
 
-## Run the app
+To stop:
 
-To run the app or restart the app :
+```bash
+docker compose down
+```
 
-docker-compose down
+See the full run guide: `../DOCS_RUN.md`.
 
-then 
+### Run locally (without Docker)
 
-docker-compose up --build
+Prerequisites:
 
-And you can access the app via localhost address on your browser. 
+- Node.js (LTS recommended)
+- npm (comes with Node.js)
+
+From this folder:
+
+```bash
+cd VACOP-app
+npm install
+npm run dev
+```
+
+Then open the Vite dev server URL (usually http://localhost:5173/).
+
+Notes:
+
+- Some pages call the backend at `http://localhost:5000`.
+	- Option A: start the full stack with Docker (recommended): see `../DOCS_RUN.md`.
+	- Option B: start the backend separately (Python/Docker) so `http://localhost:5000` is reachable.
