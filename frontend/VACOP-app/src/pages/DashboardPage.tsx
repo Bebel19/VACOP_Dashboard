@@ -106,8 +106,15 @@ const DashboardPage: React.FC = () => {
         
         {/* Column 2: Video Feeds */}
         <div className="grid-col-center">
-          <VideoFeed title="Caméra RGB" />
-          <VideoFeed title="Caméra RGBD" />
+          <VideoFeed 
+            title="Caméra RGB" 
+            streamUrl={`http://${window.location.hostname}:8889/robot`}
+
+            />
+          <VideoFeed 
+            title="Caméra RGBD" 
+            /*streamUrl="http://192.168.1.50:8889/cam_depth"           METTRE LA BONNE URL flux */ 
+          />
         </div>
         
         {/* Column 3: Sensor Visualizations */}

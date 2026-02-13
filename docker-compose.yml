@@ -64,6 +64,40 @@ services:
     networks:
       - vacop_net
 
+  # 5. Le Serveur de Flux Vidéo (MediaMTX)
+  mediamtx:
+    image: bluenviron/mediamtx:latest
+    container_name: vacop_mediamtx
+    network_mode: "host"
+    ports:
+      - "8889:8889"     # WebRTC :  Dashboard React
+      - "8189:8189/udp" # ICE : Pour que le flux passe à travers les firewalls
+      - "5001:5001/udp" # Entrée : Pour que le code OpenCV envoie les images
+    environment:
+      - MTX_HLS=no
+      - MTX_WEBRTC=yes
+      - MTX_PATHS_ROBOT_SOURCE=udp://:5001
+
+  # 6. Service de découverte automatique 
+  discovery:
+    image: python:3.9-slim
+    container_name: vacop_discovery
+    network_mode: "host"
+    environment:
+      - MQTT_BROKER_URL=neocampus.univ-tlse3.fr
+      - MQTT_BROKER_PORT=10883
+      - MQTT_USERNAME=test
+      - MQTT_PASSWORD=test
+    volumes:
+      - ./discovery.py:/app/discovery.py
+    working_dir: /app
+    command: 
+      sh -c "apt-get update && apt-get install -y openssh-client 
+      && pip install paho-mqtt 
+      && python3 discovery.py"
+    restart: on-failure
+
+
 networks:
   vacop_net:
 
