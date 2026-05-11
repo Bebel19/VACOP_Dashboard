@@ -1,59 +1,55 @@
-# VACOP - Véhicule Autonome Connecté Open-Source et Plug & Play
+# VACOP - Open-Source, Plug & Play Connected Autonomous Vehicle
 
+[![English](https://img.shields.io/badge/lang-English-blue.svg)](README.md)
+[![Français](https://img.shields.io/badge/lang-Français-red.svg)](README.fr.md)
 
+The **VACOP** project (**Open-Source, Plug & Play Connected Autonomous Vehicle**) aims to develop a connected autonomous navigation platform on the autOCampus campus at IRIT. The goal is to enable the vehicle to navigate safely within a controlled environment, while providing real-time supervision and control through a dedicated web interface and a private 5G infrastructure.
 
-Le projet **VACOP** (Véhicule Autonome Connecté Open-Source et Plug & Play) vise à développer une plateforme de navigation autonome et connectée sur le campus autOCampus (IRIT). L'objectif est de permettre au véhicule de naviguer de manière sécurisée dans un environnement contrôlé, tout en assurant une supervision et un contrôle en temps réel via une interface web dédiée et une infrastructure 5G privée.
-
-Ce projet s'inscrit dans le cadre des activités de recherche et d'expérimentation en mobilité autonome de l'IRIT et de la promotion SRI 2026.
-
----
-
-## Fonctionnalités Principales
-
-Le système VACOP est conçu autour de quatre modules principaux :
-
-* **Localisation et Estimation:**
-    * Géolocalisation centimétrique (2-3 cm) grâce à un récepteur GNSS RTK (u-blox ZED-F9P).
-    * Fusion de données robuste (Filtre de Kalman Étendu) combinant le GNSS et l'odométrie (capteurs à effet Hall) pour maintenir la position même en cas de perte de signal.
-
-* **Perception et Compréhension de l'Environnement:**
-    * Cartographie SLAM et localisation continue à l'aide d'un LiDAR 3D (Robosense Helios 16P).
-    * Détection et classification d'obstacles statiques et dynamiques (piétons, véhicules) par fusion de données LiDAR et caméras (RGB & RGB-D).
-    * Génération d'une carte de coûts dynamique pour la navigation.
-
-* **Planification de Trajectoire (Path Planning):**
-    * Planification globale pour calculer l'itinéraire optimal vers un objectif.
-    * Planification locale pour l'évitement d'obstacles en temps réel et l'adaptation aux risques (collisions, piétons).
-    * Contrôle en boucle fermée des actionneurs (moteurs, direction, freinage).
-
-* **Communication et Supervision (IHM):**
-    * Interface de supervision web (React / Flask) pour le contrôle et la visualisation à distance.
-    * **Mode Automatique :** Planification de missions (instantanées ou différées) en sélectionnant une destination sur la carte.
-    * **Mode Téléopération :** Contrôle manuel à distance du véhicule via une manette.
-    * **Visualisation Temps Réel :** Affichage des flux vidéo, de la position du véhicule, des logs et de la carte des obstacles.
+This project is part of IRIT’s research and experimentation activities in autonomous mobility, as well as the SRI 2026 engineering program.
 
 ---
 
-## Architecture Système
+## Main Features
 
-L'architecture est construite sur **ROS2** et s'articule autour de trois pôles principaux, connectés via un réseau 5G privé.
+The VACOP system is designed around four main modules:
 
+* **Localization and State Estimation:**
+    * Centimeter-level geolocation accuracy (2–3 cm) using an RTK GNSS receiver (u-blox ZED-F9P).
+    * Robust data fusion using an Extended Kalman Filter, combining GNSS and odometry data from Hall-effect sensors to maintain position estimation even in case of GNSS signal loss.
 
+* **Perception and Environment Understanding:**
+    * SLAM mapping and continuous localization using a 3D LiDAR sensor (Robosense Helios 16P).
+    * Detection and classification of static and dynamic obstacles, such as pedestrians and vehicles, through LiDAR and camera data fusion (RGB and RGB-D).
+    * Generation of a dynamic costmap for navigation.
 
-1.  **Véhicule (Embarqué):**
-    * **Calculateur principal :** NVIDIA Jetson Orin NX pour la fusion de capteurs, la perception et la planification.
-    * **Capteurs :** LiDAR, Caméras RGB/RGB-D, GNSS RTK, Capteurs à effet Hall (odométrie).
-    * **Communication :** Module Telit 5G pour la télémétrie et les corrections NTRIP.
-    * **Contrôle bas niveau :** Raspberry Pi et contrôleurs moteurs SOLO MEGA.
+* **Trajectory Planning:**
+    * Global planning to compute the optimal route toward a target destination.
+    * Local planning for real-time obstacle avoidance and risk-aware adaptation, including collision and pedestrian-related risks.
+    * Closed-loop control of actuators, including motors, steering, and braking.
 
-2.  **Serveurs (IRIT):**
-    * **Backend (C2) :** Une application **Flask** gérant la logique métier, l'API REST, les WebSockets pour les données temps réel et l'authentification.
-    * **Base de données (C2) :** **PostgreSQL** pour le stockage des utilisateurs, des missions et de l'historique des logs.
-    * **Déploiement :** L'ensemble de la supervision (C1+C2) est conteneurisé avec **Docker**.
+* **Communication and Supervision Interface:**
+    * Web-based supervision interface built with React and Flask for remote control and visualization.
+    * **Autonomous Mode:** Mission planning, either immediate or scheduled, by selecting a destination on the map.
+    * **Teleoperation Mode:** Remote manual control of the vehicle using a gamepad.
+    * **Real-Time Visualization:** Display of video streams, vehicle position, logs, and obstacle maps.
 
-3.  **Client (Opérateur):**
-    * **Frontend (C1) :** Une interface web **React** sécurisée (HTTPS) permettant à l'opérateur de superviser et contrôler le véhicule.
-    * **Protocoles :** HTTPS, WebSocket, WebRTC (pour la vidéo).
+---
 
+## System Architecture
 
+The architecture is built on **ROS 2** and organized around three main components, connected through a private 5G network.
 
+1. **Vehicle — Onboard System:**
+    * **Main computing unit:** NVIDIA Jetson Orin NX for sensor fusion, perception, and planning.
+    * **Sensors:** LiDAR, RGB/RGB-D cameras, RTK GNSS, Hall-effect sensors for odometry.
+    * **Communication:** Telit 5G module for telemetry and NTRIP corrections.
+    * **Low-level control:** Raspberry Pi and SOLO MEGA motor controllers.
+
+2. **Servers — IRIT Infrastructure:**
+    * **Backend (C2):** A **Flask** application handling business logic, the REST API, WebSockets for real-time data, and authentication.
+    * **Database (C2):** **PostgreSQL** for storing users, missions, and log history.
+    * **Deployment:** The entire supervision stack (C1 + C2) is containerized with **Docker**.
+
+3. **Client — Operator Interface:**
+    * **Frontend (C1):** A secure **React** web interface using HTTPS, allowing the operator to supervise and control the vehicle.
+    * **Protocols:** HTTPS, WebSocket, and WebRTC for video streaming.
